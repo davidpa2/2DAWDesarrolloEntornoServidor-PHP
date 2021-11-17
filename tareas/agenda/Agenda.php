@@ -19,12 +19,13 @@
                     //Buscar comprobar que el nombre introducido existe
                     if (array_key_exists($_POST['nombre'], $agend)) {    
                         unset($agend[$_POST['nombre']]); //Si existe se elimina de la agenda ese contacto
+                        echo '<div class="correcto">Contacto eliminado correctamente</div>';
                     } else { //Si no existe, mostrar error como que no existe
                         echo '<div class="error">' . $_POST['nombre'] . ' no está anotado en la agenda</div>';
                     }
                 } else { //En el caso de que se pase nombre y número
                         //Si no existía ese nombre en la agenda se añade
-                        if (!empty($agend['nombre'])) {
+                        if (empty($agend['nombre'])) {
                             echo '<div class="correcto">Contacto añadido a la agenda</div>';
                         } else { //Si ya existía se modifica
                             echo '<div class="correcto">Contacto modificado correctamente</div>';         
