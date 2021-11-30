@@ -4,6 +4,8 @@ $options = [PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
 
 $logueado = false;
 
+setcookie("tiempo", time(), time() + 3600);
+
 if (isset($_POST['acceder'])) {
     try {
         $encriptado = md5($_POST['contrasenia']);
@@ -16,15 +18,14 @@ if (isset($_POST['acceder'])) {
 
             if (isset($_POST['recordarme'])) {
                 setcookie("recordar", "recuerdame", time() + 3600);
-                setcookie("tiempo", time(), time() + 3600);
+                //setcookie("tiempo", time(), time() + 3600);
                 setcookie("nombre", $_POST['usuario'], time() + 3600);
                 setcookie("pass", $_POST['contrasenia'], time() + 3600);
             } else {
                 setcookie("nombre", $_POST['usuario']); //La cookie sin tiempo para que al salir del navegador no recuerde el usuario
-                                                        //Pero al entrar sin recordar tengamos el nombre
+                //Pero al entrar sin recordar tengamos el nombre
                 setcookie("recordar", "recuerdame", time() - 3600);
-                setcookie("recordar", "pass", time() - 3600);
-                setcookie("recordar", "tiempo", time() - 3600);
+                setcookie("pass", $_POST['contrasenia'], time() - 3600);
             }
 
             header('Location: Acceso.php');
