@@ -5,6 +5,7 @@
     <body>
         <?php
         require_once 'Persona.php';
+        require_once 'Empleado.php';
         /* $p = new Persona("Antonio", "de la Rouse", 20);
           echo $p->getEdad();
 
@@ -14,7 +15,7 @@
          */
         $p2 = new Persona();
         //echo $p2->getNombre();
-        echo "<br>" . Persona::getNumPersonas();
+        echo "<br>" . Persona::getNumPersonas(); //Llamada al método estático
 
         echo "<br>" . $p2->nombre; //Usar el método mágico __get
         echo "<br>" . $p2; //Usar el método mágico toString
@@ -38,6 +39,37 @@
         echo "<br>" . Persona::getNumPersonas();
         
         $p2->muestra('Sofia');
+        
+        
+        echo "<br>Edad: ".$p2->edad;
+        edad($p2);
+        echo "<br>Nueva edad: ".$p2->edad."<br>";
+        /**
+         * Las funciones trabajan con las propiedades de los objetos por referencia
+         * Se modificará el valor de la propia variable
+         * @param type $p
+         */
+        function edad($p) {
+          $p->edad++;  
+        }
+        
+        //Para poder pasar los atributos a formato JSON, los atributos del objeto deben ser
+        //públicos, los privados o protegidos no se codifican
+        $jsonPersonas = json_encode($p2);
+        $p4 = json_decode($jsonPersonas);
+        var_dump($p4);
+        
+        session_start();
+        $_SESSION['person'] = $p2;
+        ?>
+        <br><a href="sesionPersona.php">Ir a la sesion</a>
+        <br>
+        
+        
+        <?php
+        //HERENCIA
+        $e = new Empleado();
+        echo "<br>". $e;
         ?>
     </body>
 </html>

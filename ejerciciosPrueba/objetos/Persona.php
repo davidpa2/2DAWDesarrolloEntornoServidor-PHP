@@ -1,7 +1,14 @@
 <?php
 
+/*
+ * Una clase o método FINAL quiere decir que no puede ser redefinido en otra clase hija
+ * Una clase ABSTRACTA quiere decir que no puede instanciarse, pero puede tener clases hijas
+ * que sean instanciadas
+ * Una clase INTERFAZ es aquella en la que se declaran métodos sin estar escritos, por ello
+ * obliga que en las clases que implementen la interfaz deben estar definidos esos métodos
+ */
 class Persona {
-    protected $nombre;
+    public $nombre;
     protected $apellidos;
     protected $edad;
     protected static $numpersonas = 0;
