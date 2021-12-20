@@ -28,7 +28,7 @@ class Juego {
         $codigoGenerado = "";
         
         foreach ($arrayNombres as $palabra) {
-            $codigoGenerado ."".substr($palabra, 0, 1);
+            $codigoGenerado = $codigoGenerado."".substr($palabra, 0, 1);
         }
         
         return $codigoGenerado."-".$nombreConsola;;

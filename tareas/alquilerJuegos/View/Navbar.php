@@ -18,22 +18,29 @@
                         <li class="nav-item">
                             <a class="nav-link" href="JuegosDisponibles.php">Juegos disponibles</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="HistorialJuegosUsuario.php">Historial de juegos alquilados</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="JuegosAlquiladosUsuario.php">Alquilados del usuario</a>
-                        </li>
                         <?php
+                        if ($_SESSION['usuario']->getTipo() != "admin") {
+                            ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="HistorialJuegosUsuario.php">Historial de juegos alquilados</a>
+                            </li>
+                            <?php
+                        }
+                        if ($_SESSION['usuario']->getTipo() != "admin") {
+                            ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="JuegosAlquiladosUsuario.php">Alquilados del usuario</a>
+                            </li>
+                            <?php
+                        }
                         if ($_SESSION['usuario']->getTipo() == "admin") {
                             ?>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" role="button"
                                    data-bs-toggle="dropdown">Administrar</a>
                                 <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Clientes bloqueados</a></li>
-                                    <li><a class="dropdown-item" href="#">Desbloquear clientes</a></li>
-                                    <li><a class="dropdown-item" href="#">Administar juegos</a></li>
+                                    <li><a class="dropdown-item" href="AdministrarUsuarios.php">Administar usuarios</a></li>
+                                    <li><a class="dropdown-item" href="AdministrarJuegos.php">Administar juegos</a></li>
                                 </ul>
                             </li>
                             <?php

@@ -1,5 +1,5 @@
 <?php
-require_once '../Controller/Conexion.php';
+
 class Usuario {
     private $dni;
     private $nombre;
@@ -21,9 +21,6 @@ class Usuario {
         $this->intentos = $intentos;
     }
     
-    public static function validarUsuario() {
-        
-    }
     
     /**
      * GETTERS & SETTERS

@@ -21,9 +21,30 @@ session_start();
         <?php
         if (isset($_POST['login'])) { //Si se ha pulsado login comprobar que existe el usuario introducido
             if ($usuario = UsuarioController::validarUsuario($_POST['dni'], md5($_POST['pass']))) {
-                $_SESSION['usuario'] = $usuario;
+                if ($usuario->getIntentos() > 0) {
+                    $_SESSION['usuario'] = $usuario;
+                    UsuarioController::renovarIntentos($usuario->getDni());
+                } else {
+                    echo 'USUARIO BLOQUEADO';
+                }
+            } else if ($usuario = UsuarioController::comprobarDni($_POST['dni'])) {
+                if ($usuario->getIntentos() > 0) {
+                    UsuarioController::modificarIntentos($usuario->getDni(), -1);
+                    $intentos = $usuario->getIntentos() - 1;
+
+                    if ($intentos == 0) {
+                        echo 'USUARIO BLOQUEADO'; //Se da el caso se que con 0 intentos muestra una vez los intentos que quedan, por ello hay que asegurar
+                    } else {
+                        echo "Quedan " . $intentos . " intentos.";
+                    }
+                } else {
+                    echo 'USUARIO BLOQUEADO';
+                }
+            } else {
+                echo 'USUARIO Y/O CONTRASEÑA INCORRECTA';
             }
         }
+
         if (isset($_SESSION['usuario'])) { //Una vez existe la sesion de usuario, mostrar la navbar siempre
             require_once 'Navbar.php';
         }
@@ -88,16 +109,17 @@ session_start();
                             $listaJuegos = JuegoController::mostrarJuegos();
 
                             foreach ($listaJuegos as $juego) {
-                                if ($juego->getAlquilado() == "SI") {
-                                    echo '<tr class="bg-secondary">';
-                                } else {
-                                    echo '<tr>';
-                                }
+                                echo '<tr>';
                                 //$json_encode = [$juego->getNombreJuego(),"patata", $juego->getNombreConsola(),"patata", $juego->getAnno(),"patata", $juego->getPrecio(),"patata", $juego->getDescripcion()];
                                 ?>
-                                                <!--<td> <a href="VistaJuego.php?juego=<?php //echo json_encode($juego);     ?>"><img src="<?php //echo $juego->getImagen();     ?>" width ="100px"></a></td>-->
+                                                                    <!--<td> <a href="VistaJuego.php?juego=<?php //echo json_encode($juego);         ?>"><img src="<?php //echo $juego->getImagen();         ?>" width ="100px"></a></td>-->
                                 <?php
-                                echo "<td><a href='VistaJuego.php?juego=" . json_encode($juego) . "'><img src='" . $juego->getImagen() . "' width ='100px'></a></td>";
+                                if ($juego->getAlquilado() == 'SI') {
+                                    echo "<td><a href='VistaJuego.php?juego=" . $juego->getCodigo() . "'><img src='" . $juego->getImagen() . "' width ='100px' style='filter: grayscale(100);'></a></td>";
+                                } else {
+                                    echo "<td><a href='VistaJuego.php?juego=" . $juego->getCodigo() . "'><img src='" . $juego->getImagen() . "' width ='100px'></a></td>";
+                                }
+
                                 echo '<td>' . $juego->getNombreJuego() . '</td>';
                                 echo '<td>' . $juego->getNombreConsola() . '</td>';
                                 echo '<td>' . $juego->getAnno() . '</td>';

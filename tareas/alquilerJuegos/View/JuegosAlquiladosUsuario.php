@@ -3,6 +3,10 @@ require_once '../Controller/JuegoController.php';
 require_once '../Controller/UsuarioController.php';
 require_once '../Controller/AlquilerController.php';
 session_start();
+
+if (!isset($_SESSION['usuario'])) {
+    header("Location:index.php");
+}
 ?>
 
 <html>
@@ -14,6 +18,11 @@ session_start();
     <body>
         <?php
         require_once 'Navbar.php';
+
+        if (isset($_POST['devolver'])) {
+            AlquilerController::devolverJuego(json_decode($_POST['juego']), $_SESSION['usuario']->getDni());
+        }
+
         $listaAlquileres = AlquilerController::mostrarAlquiadosUsuario($_SESSION['usuario']->getDni());
         if ($listaAlquileres) {
             ?>
@@ -30,6 +39,7 @@ session_start();
                                     <th>Año lanzamiento</th>
                                     <th>Precio</th>
                                     <th>Fecha de alquiler</th>
+                                    <th>Devolver</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -44,16 +54,28 @@ session_start();
                                     echo '<td>' . $juego->getAnno() . '</td>';
                                     echo '<td>' . $juego->getPrecio() . '</td>';
                                     echo '<td>' . $alquiler->getFechaAlquiler() . '</td>';
-                                    echo '</tr>';
-                                }
-                                ?>
-                            </tbody>
-                        </table>
+                                    echo '<td>';
+                                    ?>
+                                <form action="" method="POST">
+                                    <input type="hidden" name="juego" value='<?php echo json_encode($juego) ?>'>
+                                    <input type="submit" class="btn btn-secondary" name='devolver' value="Devolver">
+                                </form>
                                 <?php
-                            } else {
-                                echo 'NO HAS ALQUILADO NINGÚN VIDEOJUEGO';
+                                echo '</td>';
+                                echo '</tr>';
                             }
                             ?>
+                            </tbody>
+                        </table>
+                        <?php
+                    } else {
+                        ?>
+                        <div class="alert alert-danger">
+                            No has alquilado ningún juego.
+                        </div>
+                        <?php
+                    }
+                    ?>
                 </div>
             </div>
         </div>

@@ -4,6 +4,9 @@ require_once '../Controller/UsuarioController.php';
 require_once '../Controller/AlquilerController.php';
 session_start();
 
+if (!isset($_SESSION['usuario'])) {
+    header("Location:index.php");
+}
 ?>
 
 <html>
